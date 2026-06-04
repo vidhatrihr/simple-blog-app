@@ -2,30 +2,27 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
+import { apiRequest } from '@/utils/api.js'
+import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
-const API = 'http://localhost:5000/api'
-const opts = { credentials: 'include' }
+const { whoAmI } = useWhoAmI()
 
 const user = ref(null)
 const blogs = ref([])
 
 onMounted(async () => {
-  const meRes = await fetch(`${API}/whoami`, opts)
-  if (!meRes.ok) {
-    router.push('/')
-    return
-  }
-  const meJson = await meRes.json()
-  user.value = meJson.data
+  const me = await whoAmI()
+  if (!me) return
+  user.value = me
 
-  const blogsRes = await fetch(`${API}/blogs`, opts)
+  const blogsRes = await apiRequest('/blogs')
   const blogsJson = await blogsRes.json()
   blogs.value = blogsJson.data
 })
 
 async function logout() {
-  await fetch(`${API}/logout`, { method: 'POST', ...opts })
+  await apiRequest('/logout', { method: 'POST' })
   router.push('/')
 }
 

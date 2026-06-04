@@ -2,30 +2,27 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
+import { apiRequest } from '@/utils/api.js'
+import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
 const route = useRoute()
-const API = 'http://localhost:5000/api'
-const opts = { credentials: 'include' }
+const { whoAmI } = useWhoAmI()
 
 const blog = ref(null)
 const currentUserId = ref(null)
 const newComment = ref('')
 
 onMounted(async () => {
-  const meRes = await fetch(`${API}/whoami`, opts)
-  if (!meRes.ok) {
-    router.push('/')
-    return
-  }
-  const meJson = await meRes.json()
-  currentUserId.value = meJson.data.id
+  const me = await whoAmI()
+  if (!me) return
+  currentUserId.value = me.id
 
   await loadBlog()
 })
 
 async function loadBlog() {
-  const res = await fetch(`${API}/blogs/${route.params.slug}`, opts)
+  const res = await apiRequest(`/blogs/${route.params.slug}`)
   if (!res.ok) {
     router.push('/feed')
     return
@@ -35,10 +32,7 @@ async function loadBlog() {
 }
 
 async function toggleLike() {
-  const res = await fetch(`${API}/blogs/${route.params.slug}/like`, {
-    method: 'POST',
-    credentials: 'include',
-  })
+  const res = await apiRequest(`/blogs/${route.params.slug}/like`, { method: 'POST' })
   const json = await res.json()
   blog.value.liked = json.data.liked
   blog.value.like_count = json.data.like_count
@@ -46,11 +40,9 @@ async function toggleLike() {
 
 async function addComment() {
   if (!newComment.value.trim()) return
-  const res = await fetch(`${API}/blogs/${route.params.slug}/comments`, {
+  const res = await apiRequest(`/blogs/${route.params.slug}/comments`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ content: newComment.value.trim() }),
+    body: { content: newComment.value.trim() },
   })
   const json = await res.json()
   // Place new comment at top so it appears first
@@ -60,10 +52,7 @@ async function addComment() {
 }
 
 async function deleteComment(commentId) {
-  await fetch(`${API}/comments/${commentId}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  })
+  await apiRequest(`/comments/${commentId}`, { method: 'DELETE' })
   blog.value.comments = blog.value.comments.filter(c => c.id !== commentId)
   blog.value.comment_count -= 1
 }

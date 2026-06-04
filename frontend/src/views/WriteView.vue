@@ -2,10 +2,11 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
+import { apiRequest } from '@/utils/api.js'
+import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
-const API = 'http://localhost:5000/api'
-const opts = { credentials: 'include' }
+const { whoAmI } = useWhoAmI()
 
 const title = ref('')
 const description = ref('')
@@ -13,8 +14,7 @@ const content = ref('')
 const error = ref('')
 
 onMounted(async () => {
-  const res = await fetch(`${API}/whoami`, opts)
-  if (!res.ok) router.push('/')
+  await whoAmI()
 })
 
 async function publish() {
@@ -23,15 +23,13 @@ async function publish() {
     error.value = 'Title and content are required.'
     return
   }
-  const res = await fetch(`${API}/blogs`, {
+  const res = await apiRequest('/blogs', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({
+    body: {
       title: title.value.trim(),
       description: description.value.trim(),
       content: content.value.trim(),
-    }),
+    },
   })
   const json = await res.json()
   if (!res.ok) {

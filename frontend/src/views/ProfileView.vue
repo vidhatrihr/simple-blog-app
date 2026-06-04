@@ -2,23 +2,21 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
+import { apiRequest } from '@/utils/api.js'
+import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
 const route = useRoute()
-const API = 'http://localhost:5000/api'
-const opts = { credentials: 'include' }
+const { whoAmI } = useWhoAmI()
 
 const profileName = ref('')
 const blogs = ref([])
 
 onMounted(async () => {
-  const meRes = await fetch(`${API}/whoami`, opts)
-  if (!meRes.ok) {
-    router.push('/')
-    return
-  }
+  const me = await whoAmI()
+  if (!me) return
 
-  const blogsRes = await fetch(`${API}/users/${route.params.userId}/blogs`, opts)
+  const blogsRes = await apiRequest(`/users/${route.params.userId}/blogs`)
   const blogsJson = await blogsRes.json()
   blogs.value = blogsJson.data
   if (blogs.value.length > 0) profileName.value = blogs.value[0].author.name
