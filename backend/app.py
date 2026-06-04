@@ -2,8 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_login import LoginManager
 from models import db, User
-from routes.auth import auth_bp
-from routes.blogs import blogs_bp
+from routes import auth_bp, blogs_bp
 from populate_db import seed_db
 
 app = Flask(__name__)
