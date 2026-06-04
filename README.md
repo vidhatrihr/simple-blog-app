@@ -1,5 +1,9 @@
 # Simple Blog App
 
+<p align="center">
+  <img src="assets/screenshot-1.png" alt="Simple Blog App" width="75%" />
+</p>
+
 A full-stack blogging application where users can write, read, like, and comment on blogs.
 
 **Stack:** Flask · SQLite · Vue 3 (Vite) · Pure CSS  
@@ -93,3 +97,18 @@ npm run dev
 ```
 
 Runs on `http://localhost:5173`.
+
+---
+
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="assets/screenshot-1.png" alt="Screenshot 1" /></td>
+    <td><img src="assets/screenshot-2.png" alt="Screenshot 2" /></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshot-3.png" alt="Screenshot 3" /></td>
+    <td><img src="assets/screenshot-4.png" alt="Screenshot 4" /></td>
+  </tr>
+</table>
