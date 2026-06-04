@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from models import db, User
 from routes import auth_bp, blogs_bp
-from populate_db import seed_db
+from populate_db import populate_db
 
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
@@ -30,7 +30,7 @@ app.register_blueprint(blogs_bp, url_prefix='/api')
 
 with app.app_context():
     db.create_all()
-    seed_db()
+    populate_db()
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

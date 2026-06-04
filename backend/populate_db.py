@@ -3,7 +3,7 @@ from models import db, User, Blog, Comment, Like
 from datetime import datetime, timezone
 
 
-def seed_db():
+def populate_db():
     if User.query.count() > 0:
         return
 

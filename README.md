@@ -116,7 +116,7 @@ This is the first file Flask runs. It wires everything together.
 5. **Initialises Flask-SQLAlchemy** by calling `db.init_app(app)`.
 6. **Configures Flask-Login** with a `LoginManager` and `load_user` callback.
 7. **Registers both blueprints** (`auth_bp`, `blogs_bp`) under the `/api` prefix.
-8. **Inside `app_context()`**: creates all DB tables, then calls `seed_db()`.
+8. **Inside `app_context()`**: creates all DB tables, then calls `populate_db()`.
 9. **Starts the server** on port 5000 in debug mode.
 
 ---
@@ -173,7 +173,7 @@ A join table between users and blogs. One row = one user liking one blog.
 
 ### 3.4 `populate_db.py` — Seed Data
 
-Defines a `seed_db()` function. Called from `app.py` on every startup. Returns immediately if users already exist.
+Defines a `populate_db()` function. Called from `app.py` on every startup. Returns immediately if users already exist.
 
 **What it seeds on a fresh database:**
 
