@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import NavBar from '@/components/NavBar.vue'
 
 const router = useRouter()
 const API = 'http://localhost:5000/api'
@@ -43,16 +44,13 @@ async function publish() {
 
 <template>
   <div class="app-layout">
-    <nav class="nav">
-      <span class="nav-brand" style="cursor:pointer" @click="router.push('/feed')">Simple Blog</span>
-      <div class="nav-actions">
-        <button id="cancel-write-btn" class="btn-secondary" @click="router.push('/feed')">Cancel</button>
-      </div>
-    </nav>
+    <NavBar>
+      <button id="cancel-write-btn" class="btn-secondary" @click="router.push('/feed')">Cancel</button>
+    </NavBar>
 
     <div class="write-header">
       <h1>Write a blog</h1>
-      <button id="publish-btn" class="btn-primary" style="width: auto; padding: 0.6rem 1.5rem" @click="publish">Publish</button>
+      <button id="publish-btn" class="btn-primary publish-btn" @click="publish">Publish</button>
     </div>
 
     <div class="form-group">
@@ -65,8 +63,31 @@ async function publish() {
     </div>
     <div class="form-group">
       <label for="blog-content">Content</label>
-      <textarea id="blog-content" v-model="content" style="min-height: 360px" placeholder="Write your blog here..."></textarea>
+      <textarea id="blog-content" v-model="content" class="content-area" placeholder="Write your blog here..."></textarea>
     </div>
     <p v-if="error" class="error-msg">{{ error }}</p>
   </div>
 </template>
+
+<style scoped>
+.write-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.write-header h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.publish-btn {
+  width: auto;
+  padding: 0.6rem 1.5rem;
+}
+
+.content-area {
+  min-height: 360px;
+}
+</style>

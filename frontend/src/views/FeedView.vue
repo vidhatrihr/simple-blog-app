@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import NavBar from '@/components/NavBar.vue'
 
 const router = useRouter()
 const API = 'http://localhost:5000/api'
@@ -35,19 +36,16 @@ function formatDate(iso) {
 
 <template>
   <div class="app-layout">
-    <nav class="nav">
-      <span class="nav-brand" style="cursor:pointer" @click="router.push('/feed')">Simple Blog</span>
-      <div class="nav-actions">
-        <span
-          v-if="user"
-          id="my-profile-btn"
-          style="color: var(--accent); font-size: 0.88rem; cursor: pointer"
-          @click="router.push(`/profile/${user.id}`)"
-        >{{ user.name }}</span>
-        <button id="write-btn" class="btn-secondary" @click="router.push('/write')">Write</button>
-        <button id="logout-btn" class="btn-secondary" @click="logout">Sign out</button>
-      </div>
-    </nav>
+    <NavBar>
+      <span
+        v-if="user"
+        id="my-profile-btn"
+        class="nav-user"
+        @click="router.push(`/profile/${user.id}`)"
+      >{{ user.name }}</span>
+      <button id="write-btn" class="btn-secondary" @click="router.push('/write')">Write</button>
+      <button id="logout-btn" class="btn-secondary" @click="logout">Sign out</button>
+    </NavBar>
 
     <div v-if="blogs.length === 0" class="empty">No blogs yet. Be the first to write one.</div>
 
@@ -76,3 +74,11 @@ function formatDate(iso) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.nav-user {
+  color: var(--accent);
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+</style>

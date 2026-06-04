@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import NavBar from '@/components/NavBar.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -30,12 +31,9 @@ function formatDate(iso) {
 
 <template>
   <div class="app-layout">
-    <nav class="nav">
-      <span class="nav-brand" style="cursor:pointer" @click="router.push('/feed')">Simple Blog</span>
-      <div class="nav-actions">
-        <button id="back-to-feed-profile-btn" class="btn-secondary" @click="router.push('/feed')">← Feed</button>
-      </div>
-    </nav>
+    <NavBar>
+      <button id="back-to-feed-profile-btn" class="btn-secondary" @click="router.push('/feed')">← Feed</button>
+    </NavBar>
 
     <div class="profile-header">
       <h1>{{ profileName || 'Profile' }}</h1>
@@ -64,3 +62,19 @@ function formatDate(iso) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.profile-header {
+  margin-bottom: 2rem;
+}
+
+.profile-header h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.profile-header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+</style>

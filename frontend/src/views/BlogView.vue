@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import NavBar from '@/components/NavBar.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -52,7 +53,7 @@ async function addComment() {
     body: JSON.stringify({ content: newComment.value.trim() }),
   })
   const json = await res.json()
-  // add comment to top of list (mine shows first)
+  // Place new comment at top so it appears first
   blog.value.comments.unshift(json.data)
   blog.value.comment_count += 1
   newComment.value = ''
@@ -74,12 +75,9 @@ function formatDate(iso) {
 
 <template>
   <div class="app-layout">
-    <nav class="nav">
-      <span class="nav-brand" style="cursor:pointer" @click="router.push('/feed')">Simple Blog</span>
-      <div class="nav-actions">
-        <button id="back-to-feed-btn" class="btn-secondary" @click="router.push('/feed')">← Feed</button>
-      </div>
-    </nav>
+    <NavBar>
+      <button id="back-to-feed-btn" class="btn-secondary" @click="router.push('/feed')">← Feed</button>
+    </NavBar>
 
     <div v-if="blog" class="blog-detail">
       <h1>{{ blog.title }}</h1>
@@ -95,7 +93,7 @@ function formatDate(iso) {
 
       <div class="blog-content">{{ blog.content }}</div>
 
-      <!-- like bar -->
+      <!-- Like bar -->
       <div class="like-bar">
         <button
           id="like-btn"
@@ -105,12 +103,12 @@ function formatDate(iso) {
         >
           {{ blog.liked ? '♥' : '♡' }} {{ blog.like_count }} {{ blog.like_count === 1 ? 'like' : 'likes' }}
         </button>
-        <span style="color: var(--text-muted); font-size: 0.88rem">
+        <span class="comment-count">
           {{ blog.comment_count }} {{ blog.comment_count === 1 ? 'comment' : 'comments' }}
         </span>
       </div>
 
-      <!-- comments -->
+      <!-- Comments -->
       <div class="comments-section">
         <h2>Comments</h2>
         <div class="comment-form">
@@ -122,7 +120,7 @@ function formatDate(iso) {
           <button id="add-comment-btn" class="btn-primary" @click="addComment">Post</button>
         </div>
 
-        <div v-if="blog.comments.length === 0" class="empty" style="padding: 1.5rem 0">
+        <div v-if="blog.comments.length === 0" class="empty comments-empty">
           No comments yet. Be the first.
         </div>
 
@@ -139,7 +137,7 @@ function formatDate(iso) {
                   class="comment-author"
                   @click="router.push(`/profile/${comment.user.id}`)"
                 >{{ comment.user.name }}</span>
-                <span class="comment-date" style="margin-left: 0.6rem">{{ formatDate(comment.created_at) }}</span>
+                <span class="comment-date">{{ formatDate(comment.created_at) }}</span>
               </div>
               <button
                 v-if="comment.is_mine"
@@ -154,3 +152,155 @@ function formatDate(iso) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.blog-detail {
+  padding-top: 1rem;
+}
+
+.blog-detail h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.blog-detail .blog-desc {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.blog-content {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  color: var(--text);
+  margin: 2rem 0;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+
+.like-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.like-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.like-btn.liked {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.like-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.comment-count {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.comments-section h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.comment-form {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.comment-form textarea {
+  min-height: 70px;
+  flex: 1;
+}
+
+.comment-form .btn-primary {
+  width: auto;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+.comments-empty {
+  padding: 1.5rem 0;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.comment-item.mine {
+  border-color: var(--accent);
+  border-opacity: 0.4;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.comment-author {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.comment-author:hover {
+  text-decoration: underline;
+}
+
+.comment-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-left: 0.6rem;
+}
+
+.comment-content {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .comment-form {
+    flex-direction: column;
+  }
+
+  .comment-form .btn-primary {
+    width: 100%;
+  }
+}
+</style>

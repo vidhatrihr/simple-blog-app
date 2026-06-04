@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const API = 'http://localhost:5000/api'
+
 const name = ref('')
 const email = ref('')
 const password = ref('')
@@ -10,7 +12,7 @@ const error = ref('')
 
 async function register() {
   error.value = ''
-  const res = await fetch('http://localhost:5000/api/register', {
+  const res = await fetch(`${API}/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -44,12 +46,25 @@ async function register() {
           <input id="password" v-model="password" type="password" placeholder="••••••••" required />
         </div>
         <p v-if="error" class="error-msg">{{ error }}</p>
-        <button id="register-btn" type="submit" class="btn-primary" style="margin-top: 0.5rem">Create account</button>
+        <button id="register-btn" type="submit" class="btn-primary submit-btn">Create account</button>
       </form>
-      <p style="margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-muted); text-align: center">
+      <p class="auth-footer">
         Already have an account?
         <RouterLink to="/" class="link">Sign in</RouterLink>
       </p>
     </div>
   </div>
 </template>
+
+<style scoped>
+.submit-btn {
+  margin-top: 0.5rem;
+}
+
+.auth-footer {
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+</style>

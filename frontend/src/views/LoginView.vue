@@ -3,13 +3,15 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const API = 'http://localhost:5000/api'
+
 const email = ref('')
 const password = ref('')
 const error = ref('')
 
 async function login() {
   error.value = ''
-  const res = await fetch('http://localhost:5000/api/login', {
+  const res = await fetch(`${API}/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -39,12 +41,25 @@ async function login() {
           <input id="password" v-model="password" type="password" placeholder="••••••••" required />
         </div>
         <p v-if="error" class="error-msg">{{ error }}</p>
-        <button id="login-btn" type="submit" class="btn-primary" style="margin-top: 0.5rem">Sign in</button>
+        <button id="login-btn" type="submit" class="btn-primary submit-btn">Sign in</button>
       </form>
-      <p style="margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-muted); text-align: center">
+      <p class="auth-footer">
         No account?
         <RouterLink to="/register" class="link">Create one</RouterLink>
       </p>
     </div>
   </div>
 </template>
+
+<style scoped>
+.submit-btn {
+  margin-top: 0.5rem;
+}
+
+.auth-footer {
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+</style>
