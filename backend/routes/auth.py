@@ -39,7 +39,7 @@ def logout():
     return jsonify({'message': 'Logged out'})
 
 
-@auth_bp.route('/me')
+@auth_bp.route('/whoami')
 @login_required
-def me():
+def whoami():
     return jsonify({'data': {'id': current_user.id, 'name': current_user.name, 'email': current_user.email}})

@@ -12,7 +12,7 @@ const content = ref('')
 const error = ref('')
 
 onMounted(async () => {
-  const res = await fetch(`${API}/me`, opts)
+  const res = await fetch(`${API}/whoami`, opts)
   if (!res.ok) router.push('/')
 })
 

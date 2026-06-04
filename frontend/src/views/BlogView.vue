@@ -12,7 +12,7 @@ const currentUserId = ref(null)
 const newComment = ref('')
 
 onMounted(async () => {
-  const meRes = await fetch(`${API}/me`, opts)
+  const meRes = await fetch(`${API}/whoami`, opts)
   if (!meRes.ok) {
     router.push('/')
     return

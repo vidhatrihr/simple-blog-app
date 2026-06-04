@@ -66,7 +66,7 @@ simple-blog-app/
 │   ├── blog.db                      # SQLite database (auto-created)
 │   └── routes/
 │       ├── __init__.py              # makes routes/ a Python package
-│       ├── auth.py                  # register, login, logout, me
+│       ├── auth.py                  # register, login, logout, whoami
 │       └── blogs.py                 # blog, like, comment endpoints
 └── frontend/
     ├── index.html                   # HTML shell
@@ -206,7 +206,7 @@ A Blueprint registered at `/api`. Provides four endpoints.
 
 Calls `logout_user()`. Returns `200`.
 
-#### `GET /api/me`
+#### `GET /api/whoami`
 
 Returns `{ id, name, email }` for the currently logged-in user. Returns `401` if not logged in. Used by every page as an auth guard on mount.
 
@@ -371,7 +371,7 @@ Variables are named by **context**, not by color — `--danger`, not `--red`.
 **State:** `user`, `blogs`
 
 **`onMounted()`:**
-1. `GET /api/me` — if `401`, redirect to `/`. Sets `user.value`.
+1. `GET /api/whoami` — if `401`, redirect to `/`. Sets `user.value`.
 2. `GET /api/blogs` — loads all blogs, newest first.
 
 **Template:** Nav bar with user name, Write button, Sign out button. A list of `.blog-card` elements. Each card shows title, description, author (clickable → profile), date, like count, comment count. Clicking the card navigates to `/blog/:slug`.
@@ -384,7 +384,7 @@ Variables are named by **context**, not by color — `--danger`, not `--red`.
 
 **State:** `title`, `description`, `content`, `error`
 
-**`onMounted()`:** Checks session via `GET /api/me`. Redirects to `/` if unauthenticated.
+**`onMounted()`:** Checks session via `GET /api/whoami`. Redirects to `/` if unauthenticated.
 
 **`publish()` function:**
 1. Validates title and content are not empty.
@@ -400,7 +400,7 @@ Variables are named by **context**, not by color — `--danger`, not `--red`.
 **State:** `blog` (includes `title`, `slug`, `description`, `content`, `author`, `like_count`, `liked`, `comment_count`, `comments`), `currentUserId`, `newComment`
 
 **`onMounted()`:**
-1. `GET /api/me` — auth guard, sets `currentUserId`.
+1. `GET /api/whoami` — auth guard, sets `currentUserId`.
 2. `loadBlog()` — `GET /api/blogs/:slug`.
 
 **`toggleLike()`:** `POST /api/blogs/:slug/like`. Updates `blog.liked` and `blog.like_count` from the response — no full reload.
@@ -425,7 +425,7 @@ Variables are named by **context**, not by color — `--danger`, not `--red`.
 **State:** `profileName`, `blogs`
 
 **`onMounted()`:**
-1. `GET /api/me` — auth guard.
+1. `GET /api/whoami` — auth guard.
 2. `GET /api/users/:userId/blogs` — loads that user's blogs.
 3. Sets `profileName` from the first blog's `author.name`.
 
@@ -460,7 +460,7 @@ User fills form → POST /api/login
 
 ```
 Vue mounts FeedView
-  → GET /api/me (verify session)
+  → GET /api/whoami (verify session)
       → 401: redirect to /
       → 200: set user
   → GET /api/blogs → set blogs array
@@ -519,7 +519,7 @@ All endpoints are prefixed with `/api`. Responses follow `{ "data": ..., "messag
 | `POST` | `/api/register` | No | `{ name, email, password }` | `{ message }` |
 | `POST` | `/api/login` | No | `{ email, password }` | `{ message, data: { name, email } }` |
 | `POST` | `/api/logout` | Yes | — | `{ message }` |
-| `GET` | `/api/me` | Yes | — | `{ data: { id, name, email } }` |
+| `GET` | `/api/whoami` | Yes | — | `{ data: { id, name, email } }` |
 | `GET` | `/api/blogs` | Yes | — | `{ data: [ ...blogs ] }` |
 | `GET` | `/api/blogs/<slug>` | Yes | — | `{ data: blog with content + comments }` |
 | `POST` | `/api/blogs` | Yes | `{ title, description, content }` | `{ message, data: blog }` |
