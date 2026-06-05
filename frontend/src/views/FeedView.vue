@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import { apiRequest } from '@/utils/api.js'
+import { formatDate } from '@/utils/date.js'
 import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
@@ -20,10 +21,6 @@ async function logout() {
   await apiRequest('/logout', { method: 'POST' })
   clearUser()
   router.push('/')
-}
-
-function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 </script>
 

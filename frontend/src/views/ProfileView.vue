@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import { apiRequest } from '@/utils/api.js'
+import { formatDate } from '@/utils/date.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -16,10 +17,6 @@ onMounted(async () => {
   blogs.value = blogsJson.data
   if (blogs.value.length > 0) profileName.value = blogs.value[0].author.name
 })
-
-function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-}
 </script>
 
 <template>

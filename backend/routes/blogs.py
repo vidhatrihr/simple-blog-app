@@ -84,10 +84,10 @@ def get_blog(slug):
 @login_required
 def create_blog():
     data = request.get_json()
-    base_slug = unique_slug(make_slug(data['title']))
+    slug = unique_slug(make_slug(data['title']))
     blog = Blog(
         title=data['title'],
-        slug=base_slug,
+        slug=slug,
         description=data['description'],
         content=data['content'],
         user_id=current_user.id,

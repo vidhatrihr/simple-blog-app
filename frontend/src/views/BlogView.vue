@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import { apiRequest } from '@/utils/api.js'
+import { formatDate } from '@/utils/date.js'
 import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
@@ -52,10 +53,6 @@ async function deleteComment(commentId) {
   await apiRequest(`/comments/${commentId}`, { method: 'DELETE' })
   blog.value.comments = blog.value.comments.filter(c => c.id !== commentId)
   blog.value.comment_count -= 1
-}
-
-function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 </script>
 
