@@ -15,33 +15,14 @@ A full-stack blogging application where users can write, read, like, and comment
 ```
 simple-blog-app/
 ├── backend/
-│   ├── app.py
-│   ├── models.py
-│   ├── populate_db.py
-│   ├── requirements.txt
 │   └── routes/
-│       ├── auth.py
-│       └── blogs.py
 └── frontend/
     └── src/
         ├── components/
-        │   └── NavBar.vue
         ├── composables/
-        │   └── useWhoAmI.js
-        ├── utils/
-        │   └── api.js
         ├── router/
-        │   └── index.js
-        ├── views/
-        │   ├── LoginView.vue
-        │   ├── RegisterView.vue
-        │   ├── FeedView.vue
-        │   ├── WriteView.vue
-        │   ├── BlogView.vue
-        │   └── ProfileView.vue
-        ├── App.vue
-        ├── main.js
-        └── style.css
+        ├── utils/
+        └── views/
 ```
 
 ---
