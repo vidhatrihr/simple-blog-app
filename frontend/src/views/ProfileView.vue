@@ -3,19 +3,14 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import { apiRequest } from '@/utils/api.js'
-import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
 const route = useRoute()
-const { whoAmI } = useWhoAmI()
 
 const profileName = ref('')
 const blogs = ref([])
 
 onMounted(async () => {
-  const me = await whoAmI()
-  if (!me) return
-
   const blogsRes = await apiRequest(`/users/${route.params.userId}/blogs`)
   const blogsJson = await blogsRes.json()
   blogs.value = blogsJson.data

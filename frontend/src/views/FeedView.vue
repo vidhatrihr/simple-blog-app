@@ -6,16 +6,11 @@ import { apiRequest } from '@/utils/api.js'
 import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
-const { whoAmI } = useWhoAmI()
+const { user, clearUser } = useWhoAmI()
 
-const user = ref(null)
 const blogs = ref([])
 
 onMounted(async () => {
-  const me = await whoAmI()
-  if (!me) return
-  user.value = me
-
   const blogsRes = await apiRequest('/blogs')
   const blogsJson = await blogsRes.json()
   blogs.value = blogsJson.data
@@ -23,6 +18,7 @@ onMounted(async () => {
 
 async function logout() {
   await apiRequest('/logout', { method: 'POST' })
+  clearUser()
   router.push('/')
 }
 

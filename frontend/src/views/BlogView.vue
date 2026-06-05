@@ -7,17 +7,14 @@ import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
 const route = useRoute()
-const { whoAmI } = useWhoAmI()
+const { user } = useWhoAmI()
 
 const blog = ref(null)
 const currentUserId = ref(null)
 const newComment = ref('')
 
 onMounted(async () => {
-  const me = await whoAmI()
-  if (!me) return
-  currentUserId.value = me.id
-
+  currentUserId.value = user.value.id
   await loadBlog()
 })
 

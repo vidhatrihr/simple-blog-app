@@ -1,21 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import { apiRequest } from '@/utils/api.js'
-import { useWhoAmI } from '@/composables/useWhoAmI.js'
 
 const router = useRouter()
-const { whoAmI } = useWhoAmI()
 
 const title = ref('')
 const description = ref('')
 const content = ref('')
 const error = ref('')
-
-onMounted(async () => {
-  await whoAmI()
-})
 
 async function publish() {
   error.value = ''
