@@ -67,4 +67,4 @@ def populate_db():
   db.session.add_all(comments)
 
   db.session.commit()
-  print('Database seeded — login: vidhatri@example.com / password123')
+  print('Database seeded - login: vidhatri@example.com / password123')

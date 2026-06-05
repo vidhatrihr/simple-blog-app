@@ -42,7 +42,7 @@ def serialize_blog(blog, current_user_id=None):
     }
 
 
-# GET /blogs — feed, newest first
+# GET /blogs - feed, newest first
 @blogs_bp.route('/blogs')
 @login_required
 def get_blogs():
@@ -50,7 +50,7 @@ def get_blogs():
     return jsonify({'data': [serialize_blog(b, current_user.id) for b in blogs]})
 
 
-# GET /blogs/<slug> — full blog with content, likes, comments
+# GET /blogs/<slug> - full blog with content, likes, comments
 @blogs_bp.route('/blogs/<slug>')
 @login_required
 def get_blog(slug):
@@ -79,7 +79,7 @@ def get_blog(slug):
     return jsonify({'data': data})
 
 
-# POST /blogs — create a blog
+# POST /blogs - create a blog
 @blogs_bp.route('/blogs', methods=['POST'])
 @login_required
 def create_blog():
@@ -97,7 +97,7 @@ def create_blog():
     return jsonify({'message': 'Blog published', 'data': serialize_blog(blog, current_user.id)})
 
 
-# GET /users/<user_id>/blogs — profile feed
+# GET /users/<user_id>/blogs - profile feed
 @blogs_bp.route('/users/<int:user_id>/blogs')
 @login_required
 def user_blogs(user_id):
@@ -105,7 +105,7 @@ def user_blogs(user_id):
     return jsonify({'data': [serialize_blog(b, current_user.id) for b in blogs]})
 
 
-# POST /blogs/<slug>/like — toggle like
+# POST /blogs/<slug>/like - toggle like
 @blogs_bp.route('/blogs/<slug>/like', methods=['POST'])
 @login_required
 def toggle_like(slug):
@@ -122,7 +122,7 @@ def toggle_like(slug):
     return jsonify({'data': {'liked': liked, 'like_count': len(blog.likes)}})
 
 
-# POST /blogs/<slug>/comments — add comment
+# POST /blogs/<slug>/comments - add comment
 @blogs_bp.route('/blogs/<slug>/comments', methods=['POST'])
 @login_required
 def add_comment(slug):
@@ -138,12 +138,12 @@ def add_comment(slug):
             'content': comment.content,
             'created_at': comment.created_at.isoformat(),
             'user': {'id': current_user.id, 'name': current_user.name},
-            'is_mine': True,  # always true — commenter is the current user
+            'is_mine': True,  # always true - commenter is the current user
         }
     })
 
 
-# DELETE /comments/<comment_id> — delete own comment
+# DELETE /comments/<comment_id> - delete own comment
 @blogs_bp.route('/comments/<int:comment_id>', methods=['DELETE'])
 @login_required
 def delete_comment(comment_id):
