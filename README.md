@@ -40,16 +40,25 @@ simple-blog-app/
 
 ### API endpoints
 
+#### Auth
 | Method   | URL                          | Description              |
 | -------- | ---------------------------- | ------------------------ |
 | `POST`   | `/api/register`              | Create account           |
 | `POST`   | `/api/login`                 | Log in                   |
 | `POST`   | `/api/logout`                | Log out                  |
 | `GET`    | `/api/whoami`                | Current user info        |
+
+#### Blogs
+| Method   | URL                          | Description              |
+| -------- | ---------------------------- | ------------------------ |
 | `GET`    | `/api/blogs`                 | List all blogs           |
 | `POST`   | `/api/blogs`                 | Create a blog            |
 | `GET`    | `/api/blogs/<slug>`          | Get a blog with comments |
 | `GET`    | `/api/users/<id>/blogs`      | Get all blogs by a user  |
+
+#### Interactions
+| Method   | URL                          | Description              |
+| -------- | ---------------------------- | ------------------------ |
 | `POST`   | `/api/blogs/<slug>/like`     | Toggle like              |
 | `POST`   | `/api/blogs/<slug>/comments` | Add a comment            |
 | `DELETE` | `/api/comments/<id>`         | Delete a comment         |
