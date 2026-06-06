@@ -91,9 +91,6 @@ Runs on `http://localhost:5173`.
 
 ## Screenshots
 
-Path: `/` — Login Page
-<img src="assets/login_page.png" alt="Login Page" width="100%" />
-
 Path: `/feed` — Global Feed
 <img src="assets/feed_page.png" alt="Global Feed" width="100%" />
 
@@ -105,3 +102,6 @@ Path: `/blog/:slug` — Blog View
 
 Path: `/profile/:userId` — User Profile
 <img src="assets/profile_page.png" alt="User Profile" width="100%" />
+
+Path: `/` — Login Page
+<img src="assets/login_page.png" alt="Login Page" width="100%" />
