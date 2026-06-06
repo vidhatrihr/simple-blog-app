@@ -10,7 +10,7 @@ inject_mac_ui = """() => {
     captureArea.style.padding = '40px';
     captureArea.style.background = 'transparent';
     captureArea.style.width = '1000px';
-    captureArea.style.minHeight = '760px';
+    captureArea.style.minHeight = '600px';
     captureArea.style.height = 'max-content';
     captureArea.style.boxSizing = 'border-box';
     captureArea.style.display = 'flex';
@@ -78,7 +78,7 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(viewport={'width': 1080, 'height': 800})
+        context = browser.new_context(viewport={'width': 1080, 'height': 600})
         page = context.new_page()
 
         print("Navigating to login page...")
@@ -112,6 +112,7 @@ def main():
             const el = document.getElementById('mac-capture-area');
             el.style.width = '1200px';
             el.style.height = '600px';
+            el.style.minHeight = 'unset';
         }''')
         page.wait_for_timeout(500)
         wrapper.screenshot(path=os.path.join(assets_dir, 'github-social-preview.png'), omit_background=True)
@@ -120,8 +121,9 @@ def main():
             const el = document.getElementById('mac-capture-area');
             el.style.width = '1000px';
             el.style.height = 'max-content';
+            el.style.minHeight = '600px';
         }''')
-        page.set_viewport_size({"width": 1080, "height": 800})
+        page.set_viewport_size({"width": 1080, "height": 600})
 
         print("Navigating to Write...")
         page.goto('http://localhost:5173/write')
