@@ -91,31 +91,17 @@ Runs on `http://localhost:5173`.
 
 ## Screenshots
 
-<div align="center">
-  <p><strong>Path: <code>/</code> | Section: Login Page</strong></p>
-  <img src="assets/login_page.png" alt="Login Page" width="100%" />
-</div>
-<br/>
+Path: `/` — Login Page
+<img src="assets/login_page.png" alt="Login Page" width="100%" />
 
-<div align="center">
-  <p><strong>Path: <code>/feed</code> | Section: Global Feed</strong></p>
-  <img src="assets/feed_page.png" alt="Global Feed" width="100%" />
-</div>
-<br/>
+Path: `/feed` — Global Feed
+<img src="assets/feed_page.png" alt="Global Feed" width="100%" />
 
-<div align="center">
-  <p><strong>Path: <code>/write</code> | Section: Write Blog</strong></p>
-  <img src="assets/write_page.png" alt="Write Blog" width="100%" />
-</div>
-<br/>
+Path: `/write` — Write Blog
+<img src="assets/write_page.png" alt="Write Blog" width="100%" />
 
-<div align="center">
-  <p><strong>Path: <code>/blog/:slug</code> | Section: Blog View</strong></p>
-  <img src="assets/blog_page.png" alt="Blog View" width="100%" />
-</div>
-<br/>
+Path: `/blog/:slug` — Blog View
+<img src="assets/blog_page.png" alt="Blog View" width="100%" />
 
-<div align="center">
-  <p><strong>Path: <code>/profile/:userId</code> | Section: User Profile</strong></p>
-  <img src="assets/profile_page.png" alt="User Profile" width="100%" />
-</div>
+Path: `/profile/:userId` — User Profile
+<img src="assets/profile_page.png" alt="User Profile" width="100%" />
