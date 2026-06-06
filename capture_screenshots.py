@@ -123,9 +123,25 @@ def main():
         page.goto('http://localhost:5173/blog/getting-started-with-vue-3')
         page.wait_for_timeout(1000)
         page.evaluate(inject_mac_ui)
+        
+        # Increase height for full blog page
+        page.set_viewport_size({"width": 1280, "height": 1500})
+        page.evaluate('''() => {
+            const el = document.getElementById('mac-capture-area');
+            el.style.height = '1400px';
+        }''')
+        page.wait_for_timeout(500)
+        
         wrapper = page.locator('#mac-capture-area')
         print("Capturing blog_page.png...")
         wrapper.screenshot(path=os.path.join(assets_dir, 'blog_page.png'), omit_background=True)
+        
+        # Reset height for the next screenshots
+        page.evaluate('''() => {
+            const el = document.getElementById('mac-capture-area');
+            el.style.height = '760px';
+        }''')
+        page.set_viewport_size({"width": 1280, "height": 800})
 
         print("Navigating to Profile...")
         page.goto('http://localhost:5173/profile/1')
