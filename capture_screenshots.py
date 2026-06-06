@@ -2,13 +2,19 @@ import os
 from playwright.sync_api import sync_playwright
 
 inject_mac_ui = """() => {
+    // If captureArea already exists, just return to prevent double injection
+    if (document.getElementById('mac-capture-area')) return;
+
     const captureArea = document.createElement('div');
     captureArea.id = 'mac-capture-area';
     captureArea.style.padding = '40px';
     captureArea.style.background = 'transparent';
     captureArea.style.width = '1200px';
-    captureArea.style.height = '760px';
+    captureArea.style.minHeight = '760px';
+    captureArea.style.height = 'max-content';
     captureArea.style.boxSizing = 'border-box';
+    captureArea.style.display = 'flex';
+    captureArea.style.flexDirection = 'column';
 
     const macWindow = document.createElement('div');
     macWindow.style.borderRadius = '12px';
@@ -17,7 +23,7 @@ inject_mac_ui = """() => {
     macWindow.style.border = '1px solid #333';
     macWindow.style.backgroundColor = '#0f0f11';
     macWindow.style.width = '100%';
-    macWindow.style.height = '100%';
+    macWindow.style.flex = '1';
     macWindow.style.display = 'flex';
     macWindow.style.flexDirection = 'column';
 
@@ -40,26 +46,29 @@ inject_mac_ui = """() => {
     
     const appContainer = document.createElement('div');
     appContainer.style.flex = '1';
-    appContainer.style.overflow = 'hidden';
+    appContainer.style.overflow = 'visible';
     appContainer.style.position = 'relative';
     appContainer.style.display = 'flex';
     appContainer.style.flexDirection = 'column';
 
     const style = document.createElement('style');
-    style.innerHTML = '.page-center { min-height: 100% !important; height: 100% !important; }';
+    style.innerHTML = '.page-center { flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: center !important; }';
     document.head.appendChild(style);
 
     app.parentNode.insertBefore(captureArea, app);
     appContainer.appendChild(app);
     
-    app.style.height = '100%';
-    app.style.minHeight = '100%';
+    app.style.flex = '1';
+    app.style.display = 'flex';
+    app.style.flexDirection = 'column';
     app.style.width = '100%';
 
     macWindow.appendChild(appContainer);
     captureArea.appendChild(macWindow);
     
     document.body.style.background = 'transparent';
+    document.body.style.height = 'max-content';
+    document.documentElement.style.height = 'max-content';
 }
 """
 
@@ -107,7 +116,7 @@ def main():
         page.evaluate('''() => {
             const el = document.getElementById('mac-capture-area');
             el.style.width = '1200px';
-            el.style.height = '760px';
+            el.style.height = 'max-content';
         }''')
         page.set_viewport_size({"width": 1280, "height": 800})
 
@@ -123,25 +132,9 @@ def main():
         page.goto('http://localhost:5173/blog/getting-started-with-vue-3')
         page.wait_for_timeout(1000)
         page.evaluate(inject_mac_ui)
-        
-        # Increase height for full blog page
-        page.set_viewport_size({"width": 1280, "height": 1500})
-        page.evaluate('''() => {
-            const el = document.getElementById('mac-capture-area');
-            el.style.height = '1400px';
-        }''')
-        page.wait_for_timeout(500)
-        
         wrapper = page.locator('#mac-capture-area')
         print("Capturing blog_page.png...")
         wrapper.screenshot(path=os.path.join(assets_dir, 'blog_page.png'), omit_background=True)
-        
-        # Reset height for the next screenshots
-        page.evaluate('''() => {
-            const el = document.getElementById('mac-capture-area');
-            el.style.height = '760px';
-        }''')
-        page.set_viewport_size({"width": 1280, "height": 800})
 
         print("Navigating to Profile...")
         page.goto('http://localhost:5173/profile/1')
