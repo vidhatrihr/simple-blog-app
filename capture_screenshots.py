@@ -96,6 +96,9 @@ def main():
         page.fill('input[type="email"]', 'vidhatri@example.com')
         page.fill('input[type="password"]', 'password123')
         page.click('button[type="submit"]')
+        
+        # Move mouse out of the way to prevent hover artifacts on the next page
+        page.mouse.move(0, 0)
 
         print("Waiting for /feed...")
         page.wait_for_url('**/feed')
