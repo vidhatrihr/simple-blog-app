@@ -9,7 +9,7 @@ inject_mac_ui = """() => {
     captureArea.id = 'mac-capture-area';
     captureArea.style.padding = '40px';
     captureArea.style.background = 'transparent';
-    captureArea.style.width = '800px';
+    captureArea.style.width = '1000px';
     captureArea.style.minHeight = '760px';
     captureArea.style.height = 'max-content';
     captureArea.style.boxSizing = 'border-box';
@@ -78,7 +78,7 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(viewport={'width': 880, 'height': 800})
+        context = browser.new_context(viewport={'width': 1080, 'height': 800})
         page = context.new_page()
 
         print("Navigating to login page...")
@@ -104,21 +104,21 @@ def main():
         wrapper.screenshot(path=os.path.join(assets_dir, 'feed_page.png'), omit_background=True)
 
         print("Capturing github-social-preview.png...")
-        page.set_viewport_size({"width": 1650, "height": 850})
+        page.set_viewport_size({"width": 1280, "height": 650})
         page.evaluate('''() => {
             const el = document.getElementById('mac-capture-area');
-            el.style.width = '1600px';
-            el.style.height = '800px';
+            el.style.width = '1200px';
+            el.style.height = '600px';
         }''')
         page.wait_for_timeout(500)
         wrapper.screenshot(path=os.path.join(assets_dir, 'github-social-preview.png'), omit_background=True)
         
         page.evaluate('''() => {
             const el = document.getElementById('mac-capture-area');
-            el.style.width = '800px';
+            el.style.width = '1000px';
             el.style.height = 'max-content';
         }''')
-        page.set_viewport_size({"width": 880, "height": 800})
+        page.set_viewport_size({"width": 1080, "height": 800})
 
         print("Navigating to Write...")
         page.goto('http://localhost:5173/write')
